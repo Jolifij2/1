@@ -1,0 +1,201 @@
+﻿#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cctype>
+#include <algorithm>
+
+
+using namespace std;
+
+int countWordsStartingWith(const string& filename, char startChar) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Ошибка: Не удалось открыть файл " << filename << endl;
+        return -1;
+    }
+
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string word;
+        while (ss >> word) {
+            string cleanedWord = "";
+            for (char c : word) {
+                if (isalpha(c)) {
+                    cleanedWord += c;
+                }
+            }
+            if (!cleanedWord.empty() && tolower(cleanedWord[0]) == tolower(startChar)) {
+                count++;
+            }
+        }
+    }
+    file.close();
+    return count;
+}
+
+int main() {
+    setlocale(LC_ALL, "ru");
+    string filename = "input1.txt"; 
+    char startChar;
+
+    cout << "Введите символ для поиска: ";
+    cin >> startChar;
+
+    int wordCount = countWordsStartingWith(filename, startChar);
+    if (wordCount != -1) {
+        cout << "Количество слов, начинающихся с '" << startChar << "': " << wordCount << endl;
+    }
+
+    return 0;
+}
+//задание 2
+﻿#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+void replaceChars(const string& inputFile, const string& outputFile) {
+    ifstream inFile(inputFile);
+    ofstream outFile(outputFile);
+
+    if (!inFile.is_open()) {
+        cerr << "Ошибка: Не удалось открыть файл " << inputFile << endl;
+        return;
+    }
+    if (!outFile.is_open()) {
+        cerr << "Ошибка: Не удалось открыть файл " << outputFile << endl;
+        return;
+    }
+
+    string line;
+    while (getline(inFile, line)) {
+        for (char& c : line) {
+            if (c == '0') {
+                c = '1';
+            }
+            else if (c == '1') {
+                c = '0';
+            }
+        }
+        outFile << line << endl;
+    }
+    inFile.close();
+    outFile.close();
+    cout << "Текст записан в файл " << outputFile << endl;
+}
+
+int main() {
+    setlocale(LC_ALL, "ru");
+    string inputFile = "input2.txt";    
+    string outputFile = "output2.txt";  
+    replaceChars(inputFile, outputFile);
+    return 0;
+}
+//задание 3.
+﻿#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+void writeStringsToFile(const vector<string>& strings, const string& filename) {
+    ofstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Ошибка: Не удалось открыть файл " << filename << endl;
+        return;
+    }
+
+    for (const string& str : strings) {
+        file << str << endl;
+    }
+    file.close();
+    cout << "Текст записан в файл " << filename << endl;
+}
+
+int main() {
+    setlocale(LC_ALL, "ru");
+
+    vector<string> strings = {
+        "Первая строка",
+        "Вторая строка",
+        "Третья строка с пробелами",
+        "Четвертаястрокабезпробелов"
+    }; // Пример массива строк
+
+    string filename = "output3.txt"; 
+    writeStringsToFile(strings, filename);
+    return 0;
+}
+//задание 4
+﻿#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int countChars(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Ошибка: Не удалось открыть файл " << filename << endl;
+        return -1;
+    }
+
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        count += line.length();
+    }
+    file.close();
+    return count;
+}
+
+int main() {
+    setlocale(LC_ALL, "ru");
+
+    string filename = "input4.txt"; 
+    int charCount = countChars(filename);
+    if (charCount != -1) {
+        cout << "Количество символов в файле: " << charCount << endl;
+    }
+
+    return 0;
+}
+//задание 5
+﻿#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int countLines(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Ошибка: Не удалось открыть файл " << filename << endl;
+        return -1;
+    }
+
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        count++;
+    }
+    file.close();
+    return count;
+}
+
+int main() {
+    setlocale(LC_ALL, "ru");
+
+    string filename = "input5.txt"; 
+    int lineCount = countLines(filename);
+    if (lineCount != -1) {
+        cout << "Количество строк в файле: " << lineCount << endl;
+    }
+
+    return 0;
+}
